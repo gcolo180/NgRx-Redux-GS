@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { Product } from '../product';
-import { ProductService } from '../product.service';
-import { getCurrentProduct, getShowProductCode, State } from '../state/product.reducer';
+import { getCurrentProduct, getError, getProducts, getShowProductCode, State } from '../state/product.reducer';
 import * as ProductActions from '../state/product.actions';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'pm-product-list',
@@ -13,49 +13,32 @@ import * as ProductActions from '../state/product.actions';
 })
 export class ProductListComponent implements OnInit {
   pageTitle = 'Products';
-  errorMessage: string;
 
-  displayCode: boolean;
+  products$: Observable<Product[]>;
+  selectedProduct$: Observable<Product>;
+  displayCode$: Observable<boolean>;
+  errorMessage$: Observable<string>;
 
-  products: Product[];
-
-  // Used to highlight the selected product in the list
-  selectedProduct: Product | null;
-
-  constructor(private productService: ProductService, private _store: Store<State>) { }
+  constructor(private _store: Store<State>) { }
 
   ngOnInit(): void {
-    // unsub from this
-    this._store.select(getCurrentProduct).subscribe(
-      currentProduct => this.selectedProduct = currentProduct
-    );
-
-    this.productService.getProducts().subscribe({
-      next: (products: Product[]) => this.products = products,
-      error: err => this.errorMessage = err
-    });
-
-    this._store.select(getShowProductCode).subscribe(
-      showProductCode => this.displayCode = showProductCode
-    );
+    this.products$ = this._store.select(getProducts);
+    this._store.dispatch(ProductActions.loadProducts());
+    this.errorMessage$ = this._store.select(getError);
+    this.selectedProduct$ = this._store.select(getCurrentProduct);
+    this.displayCode$ = this._store.select(getShowProductCode);
   }
 
   checkChanged(): void {
-
-    // Action: '[Product] toggle code'
-    // Reduce: this.displayCode = !this.displayCode;
-
     this._store.dispatch(ProductActions.toggleProductCode());
   }
 
   newProduct(): void {
-    this._store.dispatch(ProductActions.initCurrentProduct())
-    // this.productService.changeSelectedProduct(this.productService.newProduct());
+    this._store.dispatch(ProductActions.initCurrentProduct());
   }
 
   productSelected(product: Product): void {
-    this._store.dispatch(ProductActions.setCurrentProduct({product}))
-    // this.productService.changeSelectedProduct(product);
+    this._store.dispatch(ProductActions.setCurrentProduct({ product }));
   }
 
 }
