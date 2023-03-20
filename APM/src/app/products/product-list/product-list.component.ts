@@ -38,7 +38,6 @@ export class ProductListComponent implements OnInit {
   }
 
   productSelected(product: Product): void {
-    this._store.dispatch(ProductActions.setCurrentProduct({ product }));
+    this._store.dispatch(ProductActions.setCurrentProduct({ currentProductId: product.id }));
   }
-
 }

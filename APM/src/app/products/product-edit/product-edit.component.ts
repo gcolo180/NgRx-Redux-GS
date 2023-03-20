@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-
 import { Product } from '../product';
 import { ProductService } from '../product.service';
 import { GenericValidator } from '../../shared/generic-validator';
 import { NumberValidators } from '../../shared/number.validator';
+import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 /** ngrx */
 import { Store } from '@ngrx/store';
 import { getCurrentProduct, State } from '../state/product.reducer';
 import * as ProductActions from '../state/product.actions';
-import { tap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+
 @Component({
   selector: 'pm-product-edit',
   templateUrl: './product-edit.component.html'
@@ -26,7 +26,7 @@ export class ProductEditComponent implements OnInit {
   displayMessage: { [key: string]: string } = {};
   private validationMessages: { [key: string]: { [key: string]: string } };
   private genericValidator: GenericValidator;
-  product$: Observable<Product|null>;
+  product$: Observable<Product | null>;
 
   constructor(private fb: FormBuilder, private productService: ProductService, private _store: Store<State>) {
 
@@ -131,12 +131,12 @@ export class ProductEditComponent implements OnInit {
 
         if (product.id === 0) {
           this.productService.createProduct(product).subscribe({
-            next: p => this._store.dispatch(ProductActions.setCurrentProduct({product:p})),
+            next: p => this._store.dispatch(ProductActions.setCurrentProduct({ currentProductId: p.id })),
             error: err => this.errorMessage = err
           });
         } else {
           this.productService.updateProduct(product).subscribe({
-            next: p => this._store.dispatch(ProductActions.setCurrentProduct({product:p})),
+            next: p => this._store.dispatch(ProductActions.setCurrentProduct({ currentProductId: p.id })),
             error: err => this.errorMessage = err
           });
         }
