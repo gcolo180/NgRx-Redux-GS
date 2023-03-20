@@ -15,3 +15,13 @@ export const loadProductsSuccess = createAction('[Product] load success',
 export const loadProductsFailure = createAction('[Product] load failure',
   props<{ error: string }>()
 );
+
+export const updateProduct = createAction('[Product] update product',
+  props<{ product: Product }>()
+);
+export const updateProductSuccess = createAction('[Product] update success',
+  props<{ product: Product }>()
+);
+export const updateProductFailure = createAction('[Product] update failure',
+  props<{ error: string }>()
+);
