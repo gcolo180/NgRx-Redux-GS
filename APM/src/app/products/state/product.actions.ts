@@ -25,3 +25,13 @@ export const updateProductSuccess = createAction('[Product] update success',
 export const updateProductFailure = createAction('[Product] update failure',
   props<{ error: string }>()
 );
+
+export const createProduct = createAction('[Product] create product',
+  props<{ product: Product }>()
+);
+export const createProductSuccess = createAction('[Product] create success',
+  props<{ product: Product }>()
+);
+export const createProductFailure = createAction('[Product] create failure',
+  props<{ error: string }>()
+);
