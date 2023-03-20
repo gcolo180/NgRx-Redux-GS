@@ -35,3 +35,13 @@ export const createProductSuccess = createAction('[Product] create success',
 export const createProductFailure = createAction('[Product] create failure',
   props<{ error: string }>()
 );
+
+export const deleteProduct = createAction('[Product] delete product',
+  props<{ currentProductId: number }>()
+);
+export const deleteProductSuccess = createAction('[Product] delete product success',
+  props<{ currentProductId: number }>()
+);
+export const deleteProductFailure = createAction('[Product] delete product failure',
+  props<{ error: string }>()
+);

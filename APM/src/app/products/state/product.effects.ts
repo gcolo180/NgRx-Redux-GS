@@ -43,4 +43,16 @@ export class ProductEffects {
       )
     );
   })
+
+  deleteProduct$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ProductActions.deleteProduct),
+      mergeMap(action =>
+        this._productService.deleteProduct(action.currentProductId).pipe(
+          map(() => ProductActions.deleteProductSuccess({ currentProductId: action.currentProductId })),
+          catchError(error => of(ProductActions.deleteProductFailure({ error }))),
+        )
+      )
+    )
+  })
 }
