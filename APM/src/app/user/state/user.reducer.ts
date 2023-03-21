@@ -1,6 +1,6 @@
 import { createAction, createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
 import * as AppState from '../../state/app.state';
-import * as UserActions from './user.actions';
+import { UserPageActions } from './actions';
 
 import { User } from "../user";
 
@@ -23,7 +23,7 @@ export const getCurrentUser = createSelector(getUserFeatureState, state => state
 
 export const userReducer = createReducer(
   initialState,
-  on(UserActions.maskUserName, state => {
+  on(UserPageActions.maskUserName, state => {
     return {
       ...state,
       maskUserName: !state.maskUserName
