@@ -5,6 +5,7 @@ import { Product } from '../product';
 import { getCurrentProduct, getError, getProducts, getShowProductCode, State } from '../state/';
 import * as ProductActions from '../state/actions/product-page.actions';
 import { Observable } from 'rxjs';
+import { ProductPageActions } from '../state/actions';
 
 @Component({
   templateUrl: './product-shell.component.html'
@@ -35,5 +36,18 @@ export class ProductShellComponent implements OnInit {
 
   productSelected(product: Product): void {
     this._store.dispatch(ProductActions.setCurrentProduct({ currentProductId: product.id }));
+  }
+
+  saveProduct(product: Product): void {
+    this._store.dispatch(ProductPageActions.createProduct({ product }))
+  }
+  updateProduct(product: Product): void {
+    this._store.dispatch(ProductPageActions.updateProduct({ product }))
+  }
+  deleteProduct(product: Product): void {
+    this._store.dispatch(ProductPageActions.deleteProduct({ currentProductId: product.id }))
+  }
+  clearProduct(): void {
+    this._store.dispatch(ProductPageActions.clearCurrentProduct())
   }
 }
